@@ -13,11 +13,24 @@ pipeline {
    stage('Train Model') {
     steps {
         sh '''
-            source ./venv/bin/activate
-            python3 train_model.py
+            # Create venv if not present
+            if [ ! -d "venv" ]; then
+                python3 -m venv venv
+            fi
+
+            # Activate venv
+            . venv/bin/activate
+
+            # Install dependencies
+            pip install --upgrade pip
+            pip install -r advanced_ai_project/requirements.txt
+
+            # Run training inside venv
+            python train_model.py
         '''
     }
 }
+
 
 
 
