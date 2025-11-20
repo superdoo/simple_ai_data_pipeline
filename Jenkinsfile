@@ -5,17 +5,19 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'githubuseraccesstoken', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
                     sh 'rm -rf advanced_ai_project'
-                    sh 'git clone https://$GIT_USER:$GIT_PASS@github.com/superdoo/advanced_ai_project.git'
+                    sh 'git clone https://$GIT_USER:$GIT_PASS@github.com/superdoo/simple_ai_data_pipeline.git'
                 }
             }
         }
 
    stage('Train Model') {
-            steps {
-                sh 'python3 train_model.py'
-            }
-        }
-
+    steps {
+        sh '''
+            source ./venv/bin/activate
+            python3 train_model.py
+        '''
+    }
+}
 
 
 
