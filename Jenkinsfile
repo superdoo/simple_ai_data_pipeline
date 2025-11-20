@@ -15,21 +15,18 @@ pipeline {
     steps {
         sh '''
             # Create venv if it doesn't exist
-            if [ ! -d "venv" ]; then
-                python3 -m venv venv
-            fi
+if [ ! -d "venv" ]; then
+    python3 -m venv venv
+fi
 
-            # Activate the venv
-            . venv/bin/activate
+# Upgrade pip using the venv pip
+./venv/bin/pip install --upgrade pip
 
-            # Upgrade pip
-            pip install --upgrade pip
+# Install dependencies using the venv pip
+./venv/bin/pip install -r requirements.txt
 
-            # Install project dependencies
-            pip install -r advanced_ai_project/requirements.txt
-
-            # Run training script
-            python train_model.py
+# Run training script using the venv python
+./venv/bin/python train_model.py
         '''
     }
 }
