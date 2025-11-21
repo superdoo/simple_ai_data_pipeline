@@ -14,19 +14,24 @@ pipeline {
    stage('Train Model') {
     steps {
         sh '''
-            # Create venv if it doesn't exist
-if [ ! -d "venv" ]; then
-    python3 -m venv venv
-fi
+       # Remove any old venv completely
+rm -rf venv
 
-# Upgrade pip using the venv pip
-./venv/bin/pip install --upgrade pip
+# Recreate the virtual environment
+python3 -m venv venv
 
-# Install dependencies using the venv pip
-./venv/bin/pip install -r requirements.txt
+# FIX PERMISSIONS (important!)
+chmod +x venv/bin/*
 
-# Run training script using the venv python
-./venv/bin/python train_model.py
+# Upgrade pip
+venv/bin/python -m pip install --upgrade pip
+
+# Install requirements
+venv/bin/python -m pip install -r requirements.txt
+
+# Run training
+venv/bin/python train_model.py
+ 
         '''
     }
 }
